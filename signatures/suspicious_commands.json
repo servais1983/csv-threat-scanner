@@ -1,0 +1,133 @@
+{
+  "suspicious_commands": {
+    "disable_recovery": [
+      "bcdedit /set \\{default\\} recoveryenabled No",
+      "bcdedit /set \\{current\\} recoveryenabled No",
+      "bcdedit /set recoveryenabled No",
+      "bcdedit.exe /set \\{default\\} bootstatuspolicy ignoreallfailures",
+      "bcdedit.exe /set \\{current\\} bootstatuspolicy ignoreallfailures"
+    ],
+    "delete_shadow_copies": [
+      "vssadmin delete shadows",
+      "vssadmin.exe delete shadows /all /quiet",
+      "wmic shadowcopy delete",
+      "wmic.exe shadowcopy delete",
+      "Get-WmiObject Win32_Shadowcopy | ForEach-Object \\{$_.Delete\\(\\)\\}",
+      "Get-CimInstance Win32_ShadowCopy | Remove-CimInstance"
+    ],
+    "disable_defender": [
+      "Set-MpPreference -DisableRealtimeMonitoring",
+      "Set-MpPreference -DisableIOAVProtection",
+      "Set-MpPreference -DisableBehaviorMonitoring",
+      "Set-MpPreference -DisableIntrusionPreventionSystem",
+      "sc stop WinDefend",
+      "sc config WinDefend start= disabled",
+      "reg add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\" /v DisableAntiSpyware /t REG_DWORD /d 1",
+      "reg add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection\" /v DisableRealtimeMonitoring /t REG_DWORD /d 1"
+    ],
+    "disable_firewall": [
+      "netsh advfirewall set allprofiles state off",
+      "netsh firewall set opmode disable",
+      "sc stop MpsSvc",
+      "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False",
+      "reg add \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\StandardProfile\" /v EnableFirewall /t REG_DWORD /d 0"
+    ],
+    "clear_logs": [
+      "wevtutil cl System",
+      "wevtutil cl Security",
+      "wevtutil cl Application",
+      "wevtutil cl \"Windows PowerShell\"",
+      "wevtutil cl \"Microsoft-Windows-PowerShell/Operational\"",
+      "Clear-EventLog",
+      "Remove-EventLog",
+      "eventvwr.exe /ClearLog"
+    ],
+    "scheduled_tasks": [
+      "schtasks /create /tn",
+      "schtasks.exe /create /sc",
+      "Register-ScheduledTask",
+      "SYSTEM /run",
+      "/TN",
+      "New-ScheduledTaskAction",
+      "taskschd.msc"
+    ],
+    "privilege_escalation": [
+      "SeDebugPrivilege",
+      "SeImpersonatePrivilege",
+      "EnableLUA 0",
+      "ConsentPromptBehaviorAdmin 0",
+      "ConsentPromptBehaviorUser 0",
+      "FilterAdministratorToken 0",
+      "EnableUIADesktopToggle 0",
+      "reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0",
+      "reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0"
+    ],
+    "remote_access": [
+      "netsh advfirewall firewall add rule name=\"Remote Desktop\" dir=in action=allow protocol=TCP localport=3389",
+      "reg add \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 0",
+      "sc config TermService start= auto",
+      "net start TermService",
+      "netsh advfirewall set allprofiles state off",
+      "sc stop SharedAccess"
+    ],
+    "data_exfiltration": [
+      "bitsadmin /transfer",
+      "certutil -urlcache -split -f",
+      "Invoke-WebRequest -Uri",
+      "wget",
+      "curl",
+      "Start-BitsTransfer",
+      "New-Object System.Net.WebClient).DownloadFile",
+      "New-Object Net.WebClient).DownloadString"
+    ],
+    "powershell_obfuscation": [
+      "-enc",
+      "-encodedcommand",
+      "-EncodedCommand",
+      "FromBase64String",
+      "hidden",
+      "-nop",
+      "-noprofile",
+      "-w hidden",
+      "-exec bypass",
+      "-executionpolicy bypass"
+    ],
+    "registry_tampering": [
+      "reg add HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "reg add HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Shell",
+      "New-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\"",
+      "Set-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\""
+    ],
+    "credential_access": [
+      "mimikatz",
+      "sekurlsa::logonpasswords",
+      "lsadump::sam",
+      "kerberos::golden",
+      "gsecdump",
+      "wce.exe",
+      "pwdump",
+      "ntdsutil.exe",
+      "vssadmin create shadow",
+      "ntds.dit",
+      "SAM copy",
+      "sekurlsa::",
+      "LogonPasswords"
+    ],
+    "lateral_movement": [
+      "psexec",
+      "wmic /node:",
+      "wmic process call create",
+      "Enter-PSSession",
+      "Invoke-Command",
+      "New-PSSession",
+      "WinRM.exe",
+      "reg.exe save HKLM\\System",
+      "Move-Item \\\\",
+      "Copy-Item \\\\",
+      "sc \\\\",
+      "at \\\\",
+      "schtasks /s"
+    ]
+  }
+}
