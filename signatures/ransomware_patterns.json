@@ -1,0 +1,111 @@
+{
+  "ransomware_patterns": {
+    "wannacry": [
+      "\\.wncry$",
+      "\\.wcry$",
+      "WANACRY",
+      "WANNACRY",
+      "WANA DECRYPT",
+      "WanaCrypt0r",
+      "Please Read Me!.txt"
+    ],
+    "locky": [
+      "\\.locky$",
+      "\\.zepto$",
+      "\\.odin$",
+      "\\.shit$",
+      "\\.thor$",
+      "\\.aesir$",
+      "\\.zzzzz$",
+      "\\.osiris$",
+      "LOCKY DECRYPTOR",
+      "_Locky_recover_instructions.txt"
+    ],
+    "cerber": [
+      "\\.cerber$",
+      "\\.repto$",
+      "DECRYPT MY FILES",
+      "# DECRYPT MY FILES #.txt",
+      "# DECRYPT MY FILES #.html",
+      "# DECRYPT MY FILES #.vbs"
+    ],
+    "cryptolocker": [
+      "\\.encrypted$",
+      "DECRYPT_INSTRUCTION",
+      "HOW_DECRYPT",
+      "HELP_DECRYPT",
+      "RECOVERY_KEY",
+      "help_recover_instructions",
+      "help_restore"
+    ],
+    "ryuk": [
+      "\\.ryk$",
+      "\\.ryuk$",
+      "RyukReadMe",
+      "RyukReadMe.txt",
+      "RyukReadMe.html"
+    ],
+    "gandcrab": [
+      "\\.KRAB$",
+      "\\.CRAB$",
+      "GANDCRAB",
+      "GANDCRAB-DECRYPT.txt",
+      "GANDCRAB-RECOVER.txt"
+    ],
+    "dharma": [
+      "\\.dharma$",
+      "\\.wallet$",
+      "\\.arrow$",
+      "\\.bip$",
+      "\\.arena$",
+      "\\.java$",
+      "\\.cmb$",
+      "FILES ENCRYPTED.txt"
+    ],
+    "revil": [
+      "\\.sodinokibi$",
+      "\\.REvil$",
+      "\\.revil$",
+      "\\.sodin$",
+      "r3v1l",
+      "how_to_recover.txt",
+      "readme.txt"
+    ],
+    "stop": [
+      "\\.STOP$",
+      "\\.DJVU$",
+      "\\.PROMOS$",
+      "\\.KRONOS$",
+      "_readme.txt"
+    ],
+    "phobos": [
+      "\\.phobos$",
+      "\\.acute$",
+      "\\.phoenix$",
+      "info.hta",
+      "info.txt"
+    ],
+    "maze": [
+      "MAZE-DECRYPT.txt",
+      "DECRYPT-FILES.txt"
+    ],
+    "conti": [
+      "CONTI_README.txt",
+      "readme.txt"
+    ],
+    "darkside": [
+      "darkside-readme.txt"
+    ],
+    "egregor": [
+      "RECOVER-FILES.txt",
+      "RECOVERY-FILES.txt"
+    ],
+    "babuk": [
+      "How To Restore Your Files.txt"
+    ],
+    "lockbit": [
+      "Restore-My-Files.txt",
+      "\\.lockbit"
+    ]
+  }
+}
