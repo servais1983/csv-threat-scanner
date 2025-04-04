@@ -1,0 +1,108 @@
+# Configuration pour CSV Threat Scanner
+
+# Chemins des répertoires
+templates: templates
+signatures: signatures
+
+# Paramètres pour la détection des menaces
+threat_detection:
+  threshold:
+    # Nombre d'actions de chiffrement par heure pour déclencher une alerte
+    encryption_count: 10
+    # Nombre de tentatives de connexion échouées consécutives
+    failed_login: 5
+    # Nombre de modifications de registre sensibles
+    registry_modifications: 3
+    # Nombre de fichiers modifiés en peu de temps
+    file_modifications: 20
+  
+  # Définition des heures ouvrables (format 24h)
+  business_hours:
+    start: 8
+    end: 18
+  
+  # Seuils de sévérité personnalisés
+  severity_override:
+    # Types de menaces à considérer comme critiques, quelle que soit leur sévérité par défaut
+    critical:
+      - ransomware_wannacry
+      - ransomware_ryuk
+      - ransomware_revil
+      - ransomware_cryptolocker
+      - mass_encryption
+      - malicious_command_delete_shadow_copies
+    
+    # Types de menaces à considérer comme élevées
+    high:
+      - bitlocker_suspicious
+      - malicious_command_disable_defender
+      - malicious_command_disable_firewall
+      - malicious_command_disable_recovery
+      - malicious_ip
+      - registry_modification
+    
+    # Types de menaces à considérer comme moyennes
+    medium:
+      - suspicious_process
+      - account_change
+      - malicious_command_scheduled_tasks
+    
+    # Types de menaces à considérer comme faibles
+    low:
+      - suspicious_keyword
+
+# URLs des ressources externes (APIs, bases de données, etc.)
+external_resources:
+  # Base de données d'indicateurs de compromission (IOCs)
+  malicious_ip_database: https://example.com/api/malicious-ips
+  # Base de données de signatures de malware
+  malware_signatures: https://example.com/api/malware-signatures
+  # Service de réputation
+  reputation_service: https://example.com/api/reputation-check
+
+# Notification et alertes
+alerts:
+  # Envoyer des emails pour les menaces critiques et élevées
+  email:
+    enabled: false
+    smtp_server: smtp.example.com
+    smtp_port: 587
+    username: alert@example.com
+    password: your_password_here
+    from_address: csv-threat-scanner@example.com
+    to_addresses: 
+      - security@example.com
+      - admin@example.com
+    # Niveaux de sévérité pour lesquels envoyer des emails
+    severity_levels:
+      - critical
+      - high
+  
+  # Intégration avec Slack
+  slack:
+    enabled: false
+    webhook_url: https://hooks.slack.com/services/TXXXXXXXXX/BXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
+    channel: "#security-alerts"
+    # Niveaux de sévérité pour lesquels envoyer des notifications Slack
+    severity_levels:
+      - critical
+      - high
+      - medium
+
+# Options d'affichage et de sortie
+output:
+  # Couleurs pour les différents niveaux de sévérité (format hexadécimal)
+  colors:
+    critical: "#e74c3c"
+    high: "#e67e22"
+    medium: "#f1c40f"
+    low: "#2ecc71"
+  
+  # Options pour les rapports HTML
+  html_report:
+    # Inclure les graphiques dans le rapport
+    include_charts: true
+    # Inclure les informations détaillées sur chaque menace
+    include_details: true
+    # Inclure des suggestions de correction pour chaque type de menace
+    include_remediation: true
