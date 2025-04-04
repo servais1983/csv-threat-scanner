@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport d'analyse de sécurité {{ scan_info.scan_date }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        .header {
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .summary-box {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .summary-box.critical {
+            border-left-color: #e74c3c;
+        }
+        .summary-box.high {
+            border-left-color: #e67e22;
+        }
+        .summary-box.medium {
+            border-left-color: #f1c40f;
+        }
+        .summary-box.low {
+            border-left-color: #2ecc71;
+        }
+        .summary-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .threat-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .threat-table th, .threat-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .threat-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .threat-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .severity-critical {
+            color: white;
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .severity-high {
+            color: white;
+            background-color: #e67e22;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .severity-medium {
+            color: white;
+            background-color: #f1c40f;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .severity-low {
+            color: white;
+            background-color: #2ecc71;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .charts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .chart {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            margin: 15px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .recommendations {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .recommendations h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .recommendations ul {
+            padding-left: 20px;
+        }
+        .recommendations li {
+            margin-bottom: 10px;
+        }
+        .detail-toggle {
+            cursor: pointer;
+            color: #3498db;
+            text-decoration: underline;
+        }
+        .detail-container {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        // Fonction pour afficher/masquer les détails
+        function toggleDetails(id) {
+            var container = document.getElementById(id);
+            if (container.style.display === "none" || container.style.display === "") {
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+        
+        // Lorsque le document est chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pour chaque bouton de basculement des détails
+            var toggles = document.getElementsByClassName('detail-toggle');
+            for (var i = 0; i < toggles.length; i++) {
+                toggles[i].addEventListener('click', function() {
+                    var targetId = this.getAttribute('data-target');
+                    toggleDetails(targetId);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Rapport d'analyse de sécurité</h1>
+        <p>Date de l'analyse: {{ scan_info.scan_date }}</p>
+    </div>
+    
+    <div class="summary">
+        <div class="summary-box">
+            <div class="summary-title">Fichier analysé</div>
+            <div>{{ scan_info.filename }}</div>
+        </div>
+        <div class="summary-box">
+            <div class="summary-title">Entrées analysées</div>
+            <div class="summary-number">{{ scan_info.records_analyzed }}</div>
+        </div>
+        <div class="summary-box">
+            <div class="summary-title">Durée de l'analyse</div>
+            <div>{{ scan_info.duration | round(2) }} secondes</div>
+        </div>
+        <div class="summary-box critical">
+            <div class="summary-title">Menaces critiques</div>
+            <div class="summary-number">{{ results.critical | length }}</div>
+        </div>
+        <div class="summary-box high">
+            <div class="summary-title">Menaces élevées</div>
+            <div class="summary-number">{{ results.high | length }}</div>
+        </div>
+        <div class="summary-box medium">
+            <div class="summary-title">Menaces moyennes</div>
+            <div class="summary-number">{{ results.medium | length }}</div>
+        </div>
+        <div class="summary-box low">
+            <div class="summary-title">Menaces faibles</div>
+            <div class="summary-number">{{ results.low | length }}</div>
+        </div>
+    </div>
+    
+    <div class="charts">
+        <div class="chart" id="menaces-par-severite">
+            {{ severity_chart }}
+        </div>
+        <div class="chart" id="menaces-par-type">
+            {{ type_chart }}
+        </div>
+    </div>
+    
+    {% if results.critical %}
+    <h2>Menaces critiques</h2>
+    <table class="threat-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Détails</th>
+                <th>Timestamp</th>
+                <th>Utilisateur</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for threat in results.critical %}
+            <tr>
+                <td><span class="severity-critical">{{ threat.type }}</span></td>
+                <td>{{ threat.details }}</td>
+                <td>{{ threat.timestamp }}</td>
+                <td>{{ threat.user }}</td>
+                <td>{{ threat.source }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="recommendations">
+        <h3>Recommandations pour les menaces critiques</h3>
+        <ul>
+            <li><strong>Isoler immédiatement</strong> les systèmes affectés du réseau pour prévenir la propagation.</li>
+            <li><strong>Contacter votre équipe de sécurité</strong> ou un expert en réponse aux incidents.</li>
+            <li>Vérifier les <strong>sauvegardes récentes</strong> et s'assurer qu'elles ne sont pas compromises.</li>
+            <li>Ne pas tenter de payer une rançon en cas de ransomware détecté.</li>
+            <li>Préserver les preuves pour l'enquête post-incident.</li>
+        </ul>
+    </div>
+    {% endif %}
+    
+    {% if results.high %}
+    <h2>Menaces élevées</h2>
+    <table class="threat-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Détails</th>
+                <th>Timestamp</th>
+                <th>Utilisateur</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for threat in results.high %}
+            <tr>
+                <td><span class="severity-high">{{ threat.type }}</span></td>
+                <td>{{ threat.details }}</td>
+                <td>{{ threat.timestamp }}</td>
+                <td>{{ threat.user }}</td>
+                <td>{{ threat.source }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="recommendations">
+        <h3>Recommandations pour les menaces élevées</h3>
+        <ul>
+            <li>Vérifier les <strong>modifications non autorisées</strong> effectuées sur le système.</li>
+            <li>Réactiver les <strong>mécanismes de sécurité désactivés</strong> (Windows Defender, pare-feu, etc.).</li>
+            <li>Changer les <strong>identifiants</strong> pour tous les comptes concernés.</li>
+            <li>Vérifier la <strong>légitimité des tâches planifiées</strong> créées récemment.</li>
+            <li>Examiner les <strong>journaux d'événements</strong> pour confirmer l'étendue de l'activité suspecte.</li>
+        </ul>
+    </div>
+    {% endif %}
+    
+    {% if results.medium %}
+    <h2>Menaces moyennes</h2>
+    <table class="threat-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Détails</th>
+                <th>Timestamp</th>
+                <th>Utilisateur</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for threat in results.medium %}
+            <tr>
+                <td><span class="severity-medium">{{ threat.type }}</span></td>
+                <td>{{ threat.details }}</td>
+                <td>{{ threat.timestamp }}</td>
+                <td>{{ threat.user }}</td>
+                <td>{{ threat.source }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="recommendations">
+        <h3>Recommandations pour les menaces moyennes</h3>
+        <ul>
+            <li>Effectuer une <strong>analyse antivirus complète</strong> du système.</li>
+            <li>Vérifier les <strong>processus inhabituels</strong> en cours d'exécution.</li>
+            <li>Examiner les <strong>connexions réseau actives</strong> pour détecter d'éventuelles anomalies.</li>
+            <li>Renforcer les <strong>politiques de mot de passe</strong> et activer l'authentification multifacteur si possible.</li>
+            <li>Mettre à jour tous les <strong>logiciels et systèmes d'exploitation</strong> vers les dernières versions.</li>
+        </ul>
+    </div>
+    {% endif %}
+    
+    {% if results.low %}
+    <h2>Menaces faibles</h2>
+    <table class="threat-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Détails</th>
+                <th>Timestamp</th>
+                <th>Utilisateur</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for threat in results.low %}
+            <tr>
+                <td><span class="severity-low">{{ threat.type }}</span></td>
+                <td>{{ threat.details }}</td>
+                <td>{{ threat.timestamp }}</td>
+                <td>{{ threat.user }}</td>
+                <td>{{ threat.source }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="recommendations">
+        <h3>Recommandations pour les menaces faibles</h3>
+        <ul>
+            <li>Surveiller ces éléments pour détecter d'éventuelles <strong>escalades</strong>.</li>
+            <li>Effectuer des <strong>revues régulières</strong> des activités du système.</li>
+            <li>S'assurer que tous les <strong>correctifs de sécurité</strong> sont appliqués.</li>
+            <li>Sensibiliser les utilisateurs aux <strong>bonnes pratiques de sécurité</strong>.</li>
+        </ul>
+    </div>
+    {% endif %}
+    
+    <div class="footer">
+        <p>Généré par CSV Threat Scanner - {{ scan_info.scan_date }}</p>
+        <p>Pour plus d'informations sur les menaces détectées, consultez la documentation ou contactez votre équipe de sécurité.</p>
+    </div>
+</body>
+</html>
